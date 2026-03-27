@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Framework development</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="/favicon.ico" />
+  </head>
+
+  <body>
+    <h1>Система підтримки рішень</h1>
+
+    <div class="container">
+      <div class="block">
+        <h2><strong>Альтернативи</strong></h2>
+
+        <div class="form">
+          <input id="altName" placeholder="Назва" />
+          <input id="altDesc" placeholder="Опис" />
+          <button id="addAltBtn">+</button>
+        </div>
+
+        <ul id="altList"></ul>
+      </div>
+
+      <div class="block">
+        <h2><strong>Критерії</strong></h2>
+
+        <div class="form">
+          <input id="critName" placeholder="Назва" />
+
+          <select id="critType">
+            <option value="maximize">↑ Max</option>
+            <option value="minimize">↓ Min</option>
+          </select>
+
+          <button id="addCritBtn">+</button>
+        </div>
+
+        <ul id="critList"></ul>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><strong>Матриця оцінювання</strong></h2>
+      <table id="matrixTable"></table>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
