@@ -8,6 +8,12 @@ const criterionSchema = new mongoose.Schema(
       enum: ['maximize', 'minimize'],
       required: true,
     },
+    weight: {
+      type: Number,
+      default: 1,
+      min: 0,
+      max: 10,
+    },
     description: String,
   },
   { timestamps: true },

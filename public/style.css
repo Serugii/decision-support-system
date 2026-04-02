@@ -1,3 +1,4 @@
+/* ===== BASE ===== */
 body {
   font-family: Arial, sans-serif;
   background: #ffffff;
@@ -6,17 +7,21 @@ body {
   color: #333;
 }
 
+:where(h1, h2, .modal-content h3) {
+  color: #d9534f;
+  margin-bottom: 10px;
+}
+
 h1 {
   text-align: center;
-  color: #d9534f;
   margin-bottom: 30px;
 }
 
 h2 {
   margin-bottom: 10px;
-  color: #d9534f;
 }
 
+/* ===== LAYOUT ===== */
 .container {
   display: flex;
   gap: 20px;
@@ -24,8 +29,8 @@ h2 {
 }
 
 .block {
-  background: rgb(255, 225, 225);
-  padding: 15px 20px 40px 20px;
+  background: #ffe6e6;
+  padding: 15px 20px 40px;
   border-radius: 10px;
   border: 3px solid rgb(255, 150, 150);
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
@@ -41,21 +46,35 @@ h2 {
   margin-bottom: 15px;
 }
 
+/* ===== INPUTS & SELECTS ===== */
 input,
-select {
+select,
+td input {
   padding: 6px 10px;
-  border: 1px solid #e26a6a;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
   border-radius: 6px;
   outline: none;
   transition: 0.2s;
+  font-family: inherit;
+  background: white;
 }
 
 input:focus,
-select:focus {
+select:focus,
+td input:focus {
   border-color: #d9534f;
   box-shadow: 0 0 5px rgba(217, 83, 79, 0.3);
 }
 
+td input {
+  width: 60px;
+  padding: 4px;
+  text-align: center;
+  border-radius: 4px;
+}
+
+/* ===== BUTTONS ===== */
 button {
   padding: 6px 12px;
   cursor: pointer;
@@ -72,6 +91,38 @@ button:hover {
   border-color: #d9534f;
 }
 
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===== ANALYZE BUTTON ===== */
+.analyze-btn {
+  display: block;
+  width: 60%;
+  padding: 12px;
+  font-size: 16px;
+  margin: 15px auto 0;
+  background: #ff7777;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: 0.2s;
+}
+
+.analyze-btn:hover {
+  background: #d9534f;
+  transform: scale(1.02);
+}
+
+.analyze-btn:active {
+  transform: scale(0.98);
+}
+
+/* ===== LIST ITEMS ===== */
 .list-item {
   display: flex;
   justify-content: space-between;
@@ -84,7 +135,9 @@ button:hover {
   border: 3px solid rgb(255, 150, 150);
 }
 
-table {
+/* ===== TABLES ===== */
+table,
+.result-table {
   width: 100%;
   border-collapse: collapse;
   background: #fff5f5;
@@ -105,17 +158,165 @@ th {
   color: #fff;
 }
 
-td input {
-  width: 60px;
-  padding: 4px;
-  text-align: center;
-  border: 1px solid #e26a6a;
-  border-radius: 4px;
-  outline: none;
-  transition: 0.2s;
+.result-table th,
+.result-table td {
+  padding: 10px;
 }
 
-td input:focus {
-  border-color: #d9534f;
-  box-shadow: 0 0 5px rgba(217, 83, 79, 0.3);
+/* ===== RESULT SECTION ===== */
+.result-section {
+  margin-top: 20px;
+}
+
+.best-row {
+  background: #d4edda;
+  font-weight: bold;
+}
+
+.best-row td {
+  border-color: #28a745;
+}
+
+/* ===== TOAST ===== */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #ff4d4d;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  opacity: 0;
+  transition: 0.3s;
+  font-size: 14px;
+  z-index: 999;
+}
+
+.toast.show {
+  opacity: 1;
+}
+
+.toast.success {
+  background: #4caf50;
+}
+
+/* ===== INPUT ERROR ===== */
+.input-error {
+  border: 1px solid #ff4d4d !important;
+  background-color: #ffe6e6;
+}
+
+/* ===== MODAL ===== */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: #fff5f5;
+  padding: 20px;
+  border-radius: 12px;
+  border: 2px solid #e26a6a;
+  width: 400px;
+  max-width: 90%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  animation: scaleIn 0.2s ease;
+}
+
+.modal-content p {
+  margin-bottom: 15px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  border-top: 1px solid #f0bcbc;
+  padding-top: 10px;
+}
+
+#modalCancel {
+  background: #ffcccc;
+  color: #555;
+}
+
+#modalConfirm {
+  background: #d9534f;
+}
+
+#modalBody {
+  overflow-y: auto;
+  max-height: 50vh;
+  padding: 10px;
+  margin-bottom: 15px;
+  text-align: left;
+  word-wrap: break-word;
+}
+
+/* ===== ANALYTICS ===== */
+.analytics-text {
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.analytics-methods {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.method {
+  background: #fff;
+  border: 2px solid #f2a5a5;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.method strong {
+  display: block;
+  margin-bottom: 5px;
+  color: #d9534f;
+}
+
+.method p {
+  margin: 0;
+  font-family: monospace;
+  font-size: 14px;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }

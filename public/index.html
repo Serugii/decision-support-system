@@ -8,11 +8,24 @@
   </head>
 
   <body>
+    <div id="modal" class="modal hidden">
+      <div class="modal-content">
+        <h3 id="modalTitle"></h3>
+        <div id="modalBody"></div>
+        <div class="modal-actions">
+          <button id="modalCancel">Скасувати</button>
+          <button id="modalConfirm">OK</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
     <h1>Система підтримки рішень</h1>
 
     <div class="container">
       <div class="block">
-        <h2><strong>Альтернативи</strong></h2>
+        <h2>Альтернативи</h2>
 
         <div class="form">
           <input id="altName" placeholder="Назва" />
@@ -24,7 +37,7 @@
       </div>
 
       <div class="block">
-        <h2><strong>Критерії</strong></h2>
+        <h2>Критерії</h2>
 
         <div class="form">
           <input id="critName" placeholder="Назва" />
@@ -34,6 +47,13 @@
             <option value="minimize">↓ Min</option>
           </select>
 
+          <input
+            id="critWeight"
+            type="number"
+            placeholder="Вага (0-10)"
+            step="0.1"
+          />
+
           <button id="addCritBtn">+</button>
         </div>
 
@@ -42,10 +62,40 @@
     </div>
 
     <div class="block">
-      <h2><strong>Матриця оцінювання</strong></h2>
+      <h2>Матриця оцінювання</h2>
       <table id="matrixTable"></table>
     </div>
 
-    <script src="script.js"></script>
+    <div class="block" id="analytics-block">
+      <h2>Аналітичний блок</h2>
+
+      <p class="analytics-text">
+        Для початку аналізу необхідно заповнити всі поля матриці оцінювання.
+        Після цього система обчислює альтернативи за трьома методами:
+      </p>
+
+      <div class="analytics-methods">
+        <div class="method">
+          <strong>Адитивна згортка (SAW)</strong>
+          <p>A = Σ (wᵢ · xᵢ)</p>
+        </div>
+
+        <div class="method">
+          <strong>Мультиплікативна згортка</strong>
+          <p>A = Π (xᵢ ^ wᵢ)</p>
+        </div>
+
+        <div class="method">
+          <strong>Обережна стратегія (Minimax)</strong>
+          <p>A = min (wᵢ · xᵢ)</p>
+        </div>
+      </div>
+
+      <button id="analyze-btn" class="analyze-btn">Аналізувати</button>
+
+      <div id="analytics-result"></div>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
   </body>
 </html>

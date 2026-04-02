@@ -13,6 +13,7 @@ import alternativeRoutes from './routes/alternative.routes.js';
 import criterionRoutes from './routes/criterion.routes.js';
 import evaluationRoutes from './routes/evaluation.routes.js';
 import matrixRoutes from './routes/matrix.routes.js';
+import analyticsRoutes from './routes/analytics.routes.js';
 
 import { envSchema } from './schemas/envSchema.js';
 
@@ -119,10 +120,11 @@ await fastify.register(fastifyStatic, {
   prefix: '/',
 });
 
-await fastify.register(alternativeRoutes);
-await fastify.register(criterionRoutes);
-await fastify.register(evaluationRoutes);
-await fastify.register(matrixRoutes);
+await fastify.register(alternativeRoutes, { prefix: '/api' });
+await fastify.register(criterionRoutes, { prefix: '/api' });
+await fastify.register(evaluationRoutes, { prefix: '/api' });
+await fastify.register(matrixRoutes, { prefix: '/api' });
+fastify.register(analyticsRoutes, { prefix: '/api' });
 
 // ---------------- ERROR HANDLER ----------------
 fastify.setErrorHandler((error, request, reply) => {

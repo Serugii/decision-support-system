@@ -1,10 +1,11 @@
 export const createCriterionSchema = {
   body: {
     type: 'object',
-    required: ['name', 'type'],
+    required: ['name', 'type', 'weight'],
     properties: {
       name: { type: 'string' },
       type: { type: 'string', enum: ['maximize', 'minimize'] },
+      weight: { type: 'number', minimum: 0, maximum: 10 },
       description: { type: 'string' },
     },
   },
@@ -16,6 +17,7 @@ export const updateCriterionSchema = {
     properties: {
       name: { type: 'string' },
       type: { type: 'string', enum: ['maximize', 'minimize'] },
+      weight: { type: 'number', minimum: 0, maximum: 10 },
       description: { type: 'string' },
     },
   },
