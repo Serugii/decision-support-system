@@ -62,7 +62,27 @@
     </div>
 
     <div class="block">
-      <h2>Матриця оцінювання</h2>
+      <div class="matrix-header">
+        <h2>Матриця оцінювання</h2>
+        <div class="import-area">
+          <label
+            for="csvInput"
+            class="btn-import-label"
+            title="Завантажити CSV з Google Forms"
+          >
+            📂 Вибрати CSV
+          </label>
+          <input
+            type="file"
+            id="csvInput"
+            accept=".csv"
+            class="csv-file-input"
+          />
+          <button id="importCsvBtn" class="btn-import" disabled>
+            ⬆ Імпортувати
+          </button>
+        </div>
+      </div>
       <table id="matrixTable"></table>
     </div>
 
@@ -94,6 +114,15 @@
       <button id="analyze-btn" class="analyze-btn">Аналізувати</button>
 
       <div id="analytics-result"></div>
+
+      <div id="exportBtns" class="export-buttons hidden">
+        <button id="exportBtn" class="btn-export btn-export-json">
+          Експортувати результати (JSON)
+        </button>
+        <button id="exportCsvBtn" class="btn-export btn-export-csv">
+          Експортувати результати (CSV)
+        </button>
+      </div>
     </div>
 
     <script type="module" src="js/main.js"></script>

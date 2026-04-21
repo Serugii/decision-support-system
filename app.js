@@ -6,6 +6,7 @@ import helmet from '@fastify/helmet';
 import fastifyStatic from '@fastify/static';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import 'dotenv/config';
 
 import { connectDB } from './config/db.js';
 
@@ -14,20 +15,16 @@ import criterionRoutes from './routes/criterion.routes.js';
 import evaluationRoutes from './routes/evaluation.routes.js';
 import matrixRoutes from './routes/matrix.routes.js';
 import analyticsRoutes from './routes/analytics.routes.js';
+import importRoutes from './routes/import.routes.js';
 
 import { envSchema } from './schemas/envSchema.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// ---------------- ENV (TEMP FASTIFY FOR CONFIG) ----------------
-const fastifyTemp = Fastify();
-await fastifyTemp.register(fastifyEnv, {
-  schema: envSchema,
-  dotenv: true,
-});
-
-const isDev = fastifyTemp.config.NODE_ENV === 'development';
+// ---------------- LOGGER CONFIG ----------------
+// eslint-disable-next-line no-restricted-properties
+const isDev = process.env.NODE_ENV !== 'production';
 
 // ---------------- LOGGER CONFIG ----------------
 const loggerConfig = isDev
@@ -57,7 +54,7 @@ await connectDB();
 // ---------------- REGISTER ENV ----------------
 await fastify.register(fastifyEnv, {
   schema: envSchema,
-  dotenv: true,
+  dotenv: false,
 });
 
 // ---------------- HOOKS (LOGGING) ----------------
@@ -103,8 +100,8 @@ await fastify.register(cors, {
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 });
 
-await fastify.register(helmet, { global: true });
 await fastify.register(helmet, {
+  global: true,
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
@@ -125,6 +122,7 @@ await fastify.register(criterionRoutes, { prefix: '/api' });
 await fastify.register(evaluationRoutes, { prefix: '/api' });
 await fastify.register(matrixRoutes, { prefix: '/api' });
 fastify.register(analyticsRoutes, { prefix: '/api' });
+await fastify.register(importRoutes, { prefix: '/api' });
 
 // ---------------- ERROR HANDLER ----------------
 fastify.setErrorHandler((error, request, reply) => {

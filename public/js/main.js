@@ -4,11 +4,15 @@ import { loadMatrix } from './matrix.js';
 import { initModal } from './modal.js';
 import { showToast } from './utils.js';
 import { updateAnalyticsState } from './analytics.js';
+import { initCsvImport } from './csv-import.js';
+import { initExport } from './export.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   initModal();
   initAlternatives();
   initCriteria();
+  initCsvImport();
+  initExport();
 
   const matrix = await loadMatrix();
 

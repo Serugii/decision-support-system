@@ -320,3 +320,102 @@ th {
     opacity: 1;
   }
 }
+
+/* ===== MATRIX HEADER (заголовок + кнопка імпорту) ===== */
+.matrix-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.matrix-header h2 {
+  margin: 0;
+}
+
+.import-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Приховуємо стандартний <input type="file"> */
+.csv-file-input {
+  display: none;
+}
+
+/* Кастомна кнопка-лейбл для вибору файлу */
+.btn-import-label {
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  background: #f2a5a5;
+  border: 1px solid #e26a6a;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 14px;
+  transition: 0.2s;
+  user-select: none;
+}
+
+.btn-import-label:hover {
+  background: #d9534f;
+  border-color: #d9534f;
+}
+
+/* Кнопка "Імпортувати" */
+.btn-import {
+  padding: 6px 12px;
+  font-size: 14px;
+}
+
+/* ===== EXPORT BUTTONS ===== */
+.export-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.export-buttons.hidden {
+  display: none;
+}
+
+.btn-export {
+  flex: 1 1 200px;
+  max-width: 280px;
+  padding: 12px;
+  font-size: 15px;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  transition: 0.2s;
+}
+
+.btn-export-json {
+  background: #5a9e6f;
+}
+
+.btn-export-json:hover {
+  background: #3d7a54;
+  transform: scale(1.02);
+}
+
+.btn-export-csv {
+  background: #4a7fb5;
+}
+
+.btn-export-csv:hover {
+  background: #2f5f8f;
+  transform: scale(1.02);
+}
+
+.btn-export:active {
+  transform: scale(0.98);
+}

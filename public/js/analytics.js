@@ -1,5 +1,10 @@
 import { api } from './api.js';
 import { showToast } from './utils.js';
+import {
+  setAnalyticsResult,
+  showExportButton,
+  hideExportButton,
+} from './export.js';
 
 const btn = document.getElementById('analyze-btn');
 const resultDiv = document.getElementById('analytics-result');
@@ -40,6 +45,9 @@ export async function updateAnalyticsState(matrix) {
   const isMatrixFilled = checkMatrixFilled(matrix);
 
   btn.disabled = !(hasBasicData && isMatrixFilled);
+
+  hideExportButton();
+  resultDiv.innerHTML = '';
 }
 
 btn.addEventListener('click', async () => {
@@ -68,6 +76,8 @@ btn.addEventListener('click', async () => {
 
   const data = await api.get('/analyze');
 
+  setAnalyticsResult(data);
+
   resultDiv.innerHTML = `
     <div class="result-section">
         <h2>Адитивна згортка</h2>
@@ -84,6 +94,8 @@ btn.addEventListener('click', async () => {
         ${render(data.cautious)}
     </div>
   `;
+
+  showExportButton();
 });
 
 function render(arr) {
