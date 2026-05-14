@@ -16,14 +16,14 @@ export async function loadMatrix() {
   const header = document.createElement('tr');
   header.innerHTML = `<th>Альтернатива</th>`;
   criteriaIds.forEach((id) => {
-    header.innerHTML += `<th>${data[0].criteria[id].name}</th>`;
+    header.innerHTML += `<th title="${data[0].criteria[id].name}">${data[0].criteria[id].name}</th>`;
   });
   table.appendChild(header);
 
   // rows
   data.forEach((row) => {
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${row.alternative}</td>`;
+    tr.innerHTML = `<td class="alt-cell" title="${row.alternative}">${row.alternative}</td>`;
 
     criteriaIds.forEach((critId) => {
       const td = document.createElement('td');

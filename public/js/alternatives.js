@@ -29,11 +29,14 @@ export async function loadAlternatives() {
     li.className = 'list-item';
 
     li.innerHTML = `
-      <span>${a.name}</span>
-      <div>
-        <button data-view>👁</button>
-        <button data-edit>✏️</button>
-        <button data-delete>❌</button>
+      <div class="item-text">
+        <span class="item-name" title="${a.name}">${a.name}</span>
+        ${a.description ? `<span class="item-desc" title="${a.description}">${a.description}</span>` : ''}
+      </div>
+      <div class="item-actions">
+        <button class="btn-icon" data-view title="Переглянути">👁</button>
+        <button class="btn-icon" data-edit title="Редагувати">✏️</button>
+        <button class="btn-icon btn-danger" data-delete title="Видалити">❌</button>
       </div>
     `;
 

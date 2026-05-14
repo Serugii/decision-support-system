@@ -2,7 +2,8 @@
 <html lang="uk">
   <head>
     <meta charset="UTF-8" />
-    <title>Framework development</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Система підтримки рішень</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" href="/favicon.ico" />
   </head>
@@ -21,109 +22,354 @@
 
     <div id="toast" class="toast"></div>
 
-    <h1>Система підтримки рішень</h1>
+    <header class="app-header">
+      <h1 class="app-title">Система підтримки рішень</h1>
+      <nav class="tab-nav">
+        <button class="tab-btn active" data-tab="setup">
+          <span class="tab-icon">⚙️</span><span>Модель</span>
+        </button>
+        <button class="tab-btn" data-tab="experts">
+          <span class="tab-icon">👥</span><span>Експерти</span>
+        </button>
+        <button class="tab-btn" data-tab="rules">
+          <span class="tab-icon">📋</span><span>Правила</span>
+        </button>
+        <button class="tab-btn" data-tab="consensus">
+          <span class="tab-icon">🔗</span><span>Узгодження</span>
+        </button>
+        <button class="tab-btn" data-tab="matrix">
+          <span class="tab-icon">📊</span><span>Матриця</span>
+        </button>
+        <button class="tab-btn" data-tab="analytics">
+          <span class="tab-icon">🧮</span><span>Аналітика</span>
+        </button>
+      </nav>
+    </header>
 
-    <div class="container">
-      <div class="block">
-        <h2>Альтернативи</h2>
-
-        <div class="form">
-          <input id="altName" placeholder="Назва" />
-          <input id="altDesc" placeholder="Опис" />
-          <button id="addAltBtn">+</button>
+    <main class="app-main">
+      <!-- TAB 1: SETUP -->
+      <div id="tab-setup" class="tab-content active">
+        <p class="tab-intro">
+          Визначте альтернативи та критерії, за якими вони оцінюватимуться.
+        </p>
+        <div class="two-col">
+          <div class="block">
+            <h2>Альтернативи</h2>
+            <div class="form">
+              <input id="altName" placeholder="Назва альтернативи" />
+              <input id="altDesc" placeholder="Опис" />
+              <button id="addAltBtn" disabled>+ Додати</button>
+            </div>
+            <ul id="altList" class="item-list"></ul>
+          </div>
+          <div class="block">
+            <h2>Критерії</h2>
+            <div class="form">
+              <input id="critName" placeholder="Назва критерію" />
+              <select id="critType">
+                <option value="maximize">↑ Максимізувати</option>
+                <option value="minimize">↓ Мінімізувати</option>
+              </select>
+              <input
+                id="critWeight"
+                type="number"
+                placeholder="Вага (0–10)"
+                step="0.1"
+                min="0.1"
+                max="9.9"
+              />
+              <div class="threshold-row">
+                <label class="threshold-toggle-label">
+                  <input type="checkbox" id="critThresholdEnabled" />
+                  <span>Порогові значення</span>
+                </label>
+                <div id="thresholdFields" class="threshold-fields hidden">
+                  <input
+                    id="critThresholdMin"
+                    type="number"
+                    placeholder="Мін."
+                    step="0.1"
+                    min="0"
+                    max="10"
+                    class="threshold-input"
+                  />
+                  <span class="threshold-sep">—</span>
+                  <input
+                    id="critThresholdMax"
+                    type="number"
+                    placeholder="Макс."
+                    step="0.1"
+                    min="0"
+                    max="10"
+                    class="threshold-input"
+                  />
+                </div>
+              </div>
+              <button id="addCritBtn" disabled>+ Додати</button>
+            </div>
+            <ul id="critList" class="item-list"></ul>
+          </div>
         </div>
-
-        <ul id="altList"></ul>
       </div>
 
-      <div class="block">
-        <h2>Критерії</h2>
+      <!-- TAB 2: EXPERTS -->
+      <div id="tab-experts" class="tab-content">
+        <p class="tab-intro">
+          Додайте експертів та введіть їхні оцінки для кожної альтернативи за
+          кожним критерієм.
+        </p>
+        <div class="block">
+          <h2>Додати експерта</h2>
+          <div class="form">
+            <input id="expertName" placeholder="ПІБ або ім'я експерта" />
+            <input
+              id="expertDesc"
+              placeholder="Посада / коментар (необов'язково)"
+            />
+            <button id="addExpertBtn" disabled>+ Додати</button>
+          </div>
+        </div>
+        <div class="experts-layout">
+          <div class="block expert-list-block">
+            <h2>Список експертів</h2>
+            <ul id="expertList" class="item-list"></ul>
+          </div>
+          <div class="block expert-ratings-block" id="expertRatingsPanel">
+            <div class="ratings-placeholder" id="ratingsPlaceholder">
+              <div class="placeholder-inner">
+                <span class="placeholder-icon">👈</span>
+                <span class="placeholder-text"
+                  >Оберіть експерта зі списку, щоб ввести його оцінки</span
+                >
+              </div>
+            </div>
+            <div id="expertRatingsContent" class="hidden">
+              <div class="ratings-header">
+                <h2 id="ratingExpertName">Оцінки</h2>
+                <button id="saveRatingsBtn" class="btn-save">
+                  💾 Зберегти оцінки
+                </button>
+              </div>
+              <div class="table-scroll">
+                <table id="expertRatingTable"></table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-        <div class="form">
-          <input id="critName" placeholder="Назва" />
+      <!-- TAB 3: RULES -->
+      <div id="tab-rules" class="tab-content">
+        <p class="tab-intro">
+          Задайте правила виду IF–THEN для фільтрації або корекції оцінок
+          альтернатив під час аналізу.
+        </p>
 
-          <select id="critType">
-            <option value="maximize">↑ Max</option>
-            <option value="minimize">↓ Min</option>
-          </select>
-
-          <input
-            id="critWeight"
-            type="number"
-            placeholder="Вага (0-10)"
-            step="0.1"
-          />
-
-          <button id="addCritBtn">+</button>
+        <!-- IF-THEN rule builder -->
+        <div class="block">
+          <h2>Додати правило</h2>
+          <div class="rule-builder">
+            <div class="rule-builder-row">
+              <label class="rule-label">Назва правила</label>
+              <input
+                id="ruleName"
+                placeholder="Наприклад: Відхилити дорогі варіанти"
+                class="rule-name-input"
+              />
+            </div>
+            <div class="rule-builder-row rule-if-row">
+              <span class="rule-keyword rule-if">IF</span>
+              <select id="ruleCriterion" class="rule-select">
+                <option value="">— оберіть критерій —</option>
+              </select>
+              <select id="ruleOperator" class="rule-select rule-select-sm">
+                <option value="gt">&gt;</option>
+                <option value="lt">&lt;</option>
+                <option value="gte">≥</option>
+                <option value="lte">≤</option>
+                <option value="eq">=</option>
+              </select>
+              <input
+                id="ruleValue"
+                type="number"
+                min="0"
+                max="10"
+                step="0.1"
+                placeholder="0–10"
+                class="rule-val-input"
+              />
+            </div>
+            <div class="rule-builder-row rule-then-row">
+              <span class="rule-keyword rule-then">THEN</span>
+              <select id="ruleAction" class="rule-select">
+                <option value="exclude">відкинути альтернативу</option>
+                <option value="adjust">скоригувати оцінку (%)</option>
+              </select>
+              <div id="ruleAdjustWrap" class="rule-adjust-wrap hidden">
+                <input
+                  id="ruleActionValue"
+                  type="number"
+                  min="-100"
+                  max="100"
+                  step="1"
+                  placeholder="-20"
+                  class="rule-val-input"
+                />
+                <span class="rule-pct-label"
+                  >% (від'ємне = штраф, додатне = бонус)</span
+                >
+              </div>
+            </div>
+            <button id="addRuleBtn" class="btn-primary rule-add-btn" disabled>
+              + Додати правило
+            </button>
+          </div>
         </div>
 
-        <ul id="critList"></ul>
+        <!-- Rules list -->
+        <div class="block">
+          <h2>Список правил</h2>
+          <p class="rules-hint">
+            Правила застосовуються під час аналізу у порядку списку. Вимкнені
+            правила ігноруються.
+          </p>
+          <ul id="ruleList" class="rule-list"></ul>
+        </div>
       </div>
-    </div>
 
-    <div class="block">
-      <div class="matrix-header">
-        <h2>Матриця оцінювання</h2>
-        <div class="import-area">
-          <label
-            for="csvInput"
-            class="btn-import-label"
-            title="Завантажити CSV з Google Forms"
-          >
-            📂 Вибрати CSV
-          </label>
-          <input
-            type="file"
-            id="csvInput"
-            accept=".csv"
-            class="csv-file-input"
-          />
-          <button id="importCsvBtn" class="btn-import" disabled>
-            ⬆ Імпортувати
+      <!-- TAB 4 (was 3): CONSENSUS -->
+      <div id="tab-consensus" class="tab-content">
+        <p class="tab-intro">
+          Оберіть метод узгодження оцінок експертів та застосуйте результат до
+          матриці оцінювання.
+        </p>
+        <div class="block">
+          <h2>Методи узгодження</h2>
+          <p class="methods-hint">Натисніть на картку, щоб обрати метод</p>
+          <div class="methods-grid">
+            <div class="method-card" data-method="algebraic">
+              <div class="method-card-header">
+                <span class="method-icon">∑</span>
+                <h3>Алгебраїчний</h3>
+              </div>
+              <p>
+                Усереднює оцінки всіх експертів. Підходить, коли думки
+                рівноправні.
+              </p>
+              <p class="method-formula">x̄ = (x₁ + x₂ + … + xₙ) / n</p>
+            </div>
+            <div class="method-card" data-method="median">
+              <div class="method-card-header">
+                <span class="method-icon">Md</span>
+                <h3>Медіана</h3>
+              </div>
+              <p>Стійка до викидів. Краща, коли є суттєво відмінні оцінки.</p>
+              <p class="method-formula">
+                Me = значення посередині впорядкованого ряду
+              </p>
+            </div>
+            <div class="method-card" data-method="mode">
+              <div class="method-card-header">
+                <span class="method-icon">Mo</span>
+                <h3>Мода</h3>
+              </div>
+              <p>
+                Відображає найпопулярнішу оцінку. При кількох модах — їх
+                середнє.
+              </p>
+              <p class="method-formula">Mo = найчастіше значення</p>
+            </div>
+          </div>
+
+          <div class="consensus-actions">
+            <button id="calcConsensusBtn" class="btn-secondary">
+              🔄 Розрахувати всі методи
+            </button>
+            <button id="applySelectedMethodBtn" class="btn-primary" disabled>
+              ✅ Застосувати обраний метод до матриці
+            </button>
+          </div>
+          <p id="selectedMethodLabel" class="selected-method-label hidden"></p>
+        </div>
+
+        <div id="consensusResults" class="hidden">
+          <div class="block">
+            <h2>Результати розрахунку</h2>
+            <div id="consensusTables"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: MATRIX -->
+      <div id="tab-matrix" class="tab-content">
+        <p class="tab-intro">
+          Перегляньте та відредагуйте матрицю оцінювання. Можна заповнити вручну
+          або застосувати узгодження.
+        </p>
+        <div class="block">
+          <div class="matrix-header">
+            <h2>Матриця оцінювання</h2>
+            <div class="import-area">
+              <label
+                for="csvInput"
+                class="btn-import-label"
+                title="Завантажити CSV"
+                >📂 Вибрати CSV</label
+              >
+              <input
+                type="file"
+                id="csvInput"
+                accept=".csv"
+                class="csv-file-input"
+              />
+              <button id="importCsvBtn" class="btn-import" disabled>
+                ⬆ Імпортувати
+              </button>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table id="matrixTable"></table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 5: ANALYTICS -->
+      <div id="tab-analytics" class="tab-content">
+        <p class="tab-intro">
+          Система обчислює інтегральну оцінку альтернатив за трьома методами та
+          визначає найкращу.
+        </p>
+        <div class="block">
+          <h2>Аналітичний блок</h2>
+          <div class="analytics-methods">
+            <div class="method">
+              <strong>Адитивна згортка (SAW)</strong>
+              <p>A = Σ (wᵢ · xᵢ)</p>
+            </div>
+            <div class="method">
+              <strong>Мультиплікативна згортка</strong>
+              <p>A = Π (xᵢ ^ wᵢ)</p>
+            </div>
+            <div class="method">
+              <strong>Обережна стратегія (Minimax)</strong>
+              <p>A = min(wᵢ · xᵢ)</p>
+            </div>
+          </div>
+          <button id="analyze-btn" class="analyze-btn" disabled>
+            🧮 Аналізувати
           </button>
+          <div id="analytics-result"></div>
+          <div id="exportBtns" class="export-buttons hidden">
+            <button id="exportBtn" class="btn-export btn-export-json">
+              Експортувати (JSON)
+            </button>
+            <button id="exportCsvBtn" class="btn-export btn-export-csv">
+              Експортувати (CSV)
+            </button>
+          </div>
         </div>
       </div>
-      <table id="matrixTable"></table>
-    </div>
-
-    <div class="block" id="analytics-block">
-      <h2>Аналітичний блок</h2>
-
-      <p class="analytics-text">
-        Для початку аналізу необхідно заповнити всі поля матриці оцінювання.
-        Після цього система обчислює альтернативи за трьома методами:
-      </p>
-
-      <div class="analytics-methods">
-        <div class="method">
-          <strong>Адитивна згортка (SAW)</strong>
-          <p>A = Σ (wᵢ · xᵢ)</p>
-        </div>
-
-        <div class="method">
-          <strong>Мультиплікативна згортка</strong>
-          <p>A = Π (xᵢ ^ wᵢ)</p>
-        </div>
-
-        <div class="method">
-          <strong>Обережна стратегія (Minimax)</strong>
-          <p>A = min (wᵢ · xᵢ)</p>
-        </div>
-      </div>
-
-      <button id="analyze-btn" class="analyze-btn">Аналізувати</button>
-
-      <div id="analytics-result"></div>
-
-      <div id="exportBtns" class="export-buttons hidden">
-        <button id="exportBtn" class="btn-export btn-export-json">
-          Експортувати результати (JSON)
-        </button>
-        <button id="exportCsvBtn" class="btn-export btn-export-csv">
-          Експортувати результати (CSV)
-        </button>
-      </div>
-    </div>
+    </main>
 
     <script type="module" src="js/main.js"></script>
   </body>

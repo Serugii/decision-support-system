@@ -15,6 +15,9 @@ const criterionSchema = new mongoose.Schema(
       max: 10,
     },
     description: String,
+    thresholdEnabled: { type: Boolean, default: false },
+    thresholdMin: { type: Number, default: null },
+    thresholdMax: { type: Number, default: null },
   },
   { timestamps: true },
 );

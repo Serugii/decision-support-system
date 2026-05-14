@@ -16,6 +16,8 @@ import evaluationRoutes from './routes/evaluation.routes.js';
 import matrixRoutes from './routes/matrix.routes.js';
 import analyticsRoutes from './routes/analytics.routes.js';
 import importRoutes from './routes/import.routes.js';
+import expertRoutes from './routes/expert.routes.js';
+import ruleRoutes from './routes/rule.routes.js';
 
 import { envSchema } from './schemas/envSchema.js';
 
@@ -106,6 +108,7 @@ await fastify.register(helmet, {
     directives: {
       defaultSrc: ["'self'"],
       scriptSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrcAttr: ["'unsafe-inline'"],
     },
   },
 });
@@ -123,6 +126,8 @@ await fastify.register(evaluationRoutes, { prefix: '/api' });
 await fastify.register(matrixRoutes, { prefix: '/api' });
 fastify.register(analyticsRoutes, { prefix: '/api' });
 await fastify.register(importRoutes, { prefix: '/api' });
+await fastify.register(expertRoutes, { prefix: '/api' });
+await fastify.register(ruleRoutes, { prefix: '/api' });
 
 // ---------------- ERROR HANDLER ----------------
 fastify.setErrorHandler((error, request, reply) => {

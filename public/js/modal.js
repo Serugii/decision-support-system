@@ -15,7 +15,7 @@ export function initModal() {
   });
 }
 
-export function openModal({ title, contentHTML, onConfirm }) {
+export function openModal({ title, contentHTML, onConfirm, onOpen }) {
   $('modalTitle').textContent = title;
   $('modalBody').innerHTML = contentHTML;
 
@@ -24,6 +24,8 @@ export function openModal({ title, contentHTML, onConfirm }) {
   $('modalConfirm').style.display = onConfirm ? 'inline-block' : 'none';
 
   $('modal').classList.remove('hidden');
+
+  if (onOpen) onOpen();
 }
 
 export function closeModal() {
